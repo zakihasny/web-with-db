@@ -1,0 +1,20 @@
+{
+  "name": "testing-database-main",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "dev": "nuxt dev --host 127.0.0.1 --port 5175",
+    "build": "pnpm tokens:check && nuxt build",
+    "preview": "nuxt preview --host 127.0.0.1 --port 4173",
+    "tokens:build": "node tools/generate-tokens.mjs",
+    "tokens:check": "node tools/generate-tokens.mjs --check"
+  },
+  "dependencies": {
+    "@lucide/vue": "1.29.0",
+    "mysql2": "3.23.2",
+    "nuxt": "4.5.2"
+  },
+  "devDependencies": {}
+}
