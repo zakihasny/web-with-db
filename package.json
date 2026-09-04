@@ -1,20 +1,26 @@
 {
-  "name": "testing-database-main",
-  "version": "0.1.0",
+  "name": "asset-compliance",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.16.0",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
-    "dev": "nuxt dev --host 127.0.0.1 --port 5175",
-    "build": "pnpm tokens:check && nuxt build",
-    "preview": "nuxt preview --host 127.0.0.1 --port 4173",
-    "tokens:build": "node tools/generate-tokens.mjs",
-    "tokens:check": "node tools/generate-tokens.mjs --check"
+    "dev": "nuxt dev --host 127.0.0.1",
+    "build": "nuxt build",
+    "postinstall": "nuxt prepare",
+    "start": "node .output/server/index.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@lucide/vue": "1.29.0",
-    "mysql2": "3.23.2",
-    "nuxt": "4.5.2"
+    "@fontsource-variable/geist": "5.3.0",
+    "nuxt": "4.5.2",
+    "pg": "8.23.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "vitest": "4.1.11"
+  }
 }

@@ -1,4 +1,6 @@
 allowBuilds:
   esbuild: true
-minimumReleaseAgeExclude:
-  - '@lucide/vue@1.29.0'
+onlyBuiltDependencies:
+  - esbuild
+overrides:
+  rollup: npm:@rollup/wasm-node@4.63.1

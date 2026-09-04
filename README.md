@@ -1,40 +1,48 @@
-# Testing Website With Database
+# Asset Compliance
 
-A Nuxt website for exploring and extending the MySQL sample in `database/sample_employee_database.sql`.
+Asset Compliance is a Nuxt full-stack service for NEO Web Service, NEO DB PostgreSQL 16, and NEO Cron. It shows device and license inventory tables populated by authenticated scheduled API calls.
 
-## Pages
+## Routes
 
-- `/` — overview and live record counts.
-- `/query` — read-only SQL console for `SELECT`, `SHOW`, `DESCRIBE`, and `EXPLAIN`.
-- `/input` — validated form for adding employee records.
+- `/` — Home with links to both inventories.
+- `/devices` — Stock Device table.
+- `/licenses` — Stock License table.
+- `POST /api/cron/devices` — inserts one random device per eight-hour UTC bucket.
+- `POST /api/cron/licenses` — inserts one random license per six-hour UTC bucket.
+- `/api/health/live` and `/api/health/ready` — service probes.
 
 ## Local setup
 
-Requirements: Docker Desktop and pnpm.
-
-```powershell
-Copy-Item .env.example .env
-docker compose up -d
+```bash
 pnpm install
-pnpm tokens:build
+cp .env.example .env
 pnpm dev
 ```
 
-Open `http://127.0.0.1:5175`.
-
-The Docker configuration initializes the sample schema and two least-privilege users: one for read-only SQL queries and one for validated inserts. The committed credentials are for local testing only; replace them in every shared or production environment.
+Set `DEMO_MODE=true` to preview the frontend without PostgreSQL. Demo mode is non-persistent and must remain disabled in production.
 
 ## Validation
 
-```powershell
-pnpm tokens:check
+```bash
+pnpm test
 pnpm build
 ```
 
-## Deployment note
+## Container image
 
-This application requires a Node.js server and MySQL. GitHub Pages cannot run the server API or MySQL connection. Push the repository to GitHub, then deploy it to a Node-compatible host with the environment variables from `.env.example` and separate least-privilege MySQL users.
+```bash
+docker build -t asset-compliance .
+docker run --rm -p 3000:3000 \
+  -e DATABASE_URL='postgresql://user:password@host:5432/asset_compliance' \
+  -e CRON_SHARED_SECRET='replace-with-a-long-random-secret' \
+  -e RUN_DB_MIGRATIONS=true \
+  asset-compliance
+```
 
-## Design system
+The production image listens on port `3000` and runs as the non-root `nuxt` user.
 
-The repository includes the downloaded `skills.md` from `https://ds.biznetgio.com/skills.md`. Project tokens are generated from `design-tokens/bgn.tokens.json`, and the public brand files are unmodified official SVG assets downloaded from the same design-system host.
+## Deployment configuration
+
+Provide `DATABASE_URL`, `CRON_SHARED_SECRET`, `NITRO_HOST=0.0.0.0`, `NITRO_PORT=3000`, and `DEMO_MODE=false`. The service applies the idempotent migrations in `migrations/` at startup unless `RUN_DB_MIGRATIONS=false`.
+
+Read `skills.md` before modifying the service; it contains the complete product, data, Cron, design, security, and deployment contract.
