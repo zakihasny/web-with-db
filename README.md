@@ -32,17 +32,17 @@ pnpm build
 
 ```bash
 docker build -t asset-compliance .
-docker run --rm -p 3000:3000 \
+docker run --rm -p 3000:80 \
   -e DATABASE_URL='postgresql://user:password@host:5432/asset_compliance' \
   -e CRON_SHARED_SECRET='replace-with-a-long-random-secret' \
   -e RUN_DB_MIGRATIONS=true \
   asset-compliance
 ```
 
-The production image listens on port `3000` and runs as the non-root `nuxt` user.
+The production image listens on port `80` and runs as the non-root `nuxt` user.
 
 ## Deployment configuration
 
-Provide `DATABASE_URL`, `CRON_SHARED_SECRET`, `NITRO_HOST=0.0.0.0`, `NITRO_PORT=3000`, and `DEMO_MODE=false`. The service applies the idempotent migrations in `migrations/` at startup unless `RUN_DB_MIGRATIONS=false`.
+Provide `DATABASE_URL`, `CRON_SHARED_SECRET`, `PORT=80`, `NITRO_HOST=0.0.0.0`, `NITRO_PORT=80`, and `DEMO_MODE=false`. The service applies the idempotent migrations in `migrations/` at startup unless `RUN_DB_MIGRATIONS=false`.
 
 Read `skills.md` before modifying the service; it contains the complete product, data, Cron, design, security, and deployment contract.

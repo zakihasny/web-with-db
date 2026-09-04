@@ -269,8 +269,9 @@ Required production values:
 ```dotenv
 DATABASE_URL=postgresql://username:password@neo-db-host:5432/asset_compliance?sslmode=verify-full
 CRON_SHARED_SECRET=<long-random-secret>
+PORT=80
 NITRO_HOST=0.0.0.0
-NITRO_PORT=3000
+NITRO_PORT=80
 RUN_DB_MIGRATIONS=true
 DEMO_MODE=false
 ```
@@ -351,4 +352,3 @@ Unless explicitly requested, do not add:
 - External email or chat notifications.
 - Browser-local persistence as an authoritative datastore.
 - Multiple web services for frontend and backend.
-

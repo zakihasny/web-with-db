@@ -12,10 +12,10 @@ FROM node:22-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production \
     NITRO_HOST=0.0.0.0 \
-    NITRO_PORT=3000
+    NITRO_PORT=80
 RUN addgroup -S nodejs && adduser -S nuxt -G nodejs
 COPY --chown=nuxt:nodejs --from=build /app/.output ./.output
 COPY --chown=nuxt:nodejs --from=build /app/migrations ./migrations
 USER nuxt
-EXPOSE 3000
+EXPOSE 80
 CMD ["node", ".output/server/index.mjs"]
